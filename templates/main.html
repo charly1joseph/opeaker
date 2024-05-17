@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>opeaker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Google font for digital type -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <div class="container">
+        <h1>opeaker</h1>
+        <p id="release-text">{{ username }}, {{ 'welcome' if new_user else 'welcome back' }}.</p>
+        <!-- Buttons with icons -->
+        <div class="button-container">
+            <button class="icon-button" id="button-philosophy">
+                <i class="fas fa-brain"></i>
+                <span class="button-text hidden">Philosophy</span>
+            </button>
+            <button class="icon-button" id="button-music">
+                <i class="fas fa-music"></i>
+                <span class="button-text hidden">Music</span>
+            </button>
+            <button class="icon-button" id="button-reading">
+                <i class="fas fa-book"></i>
+                <span class="button-text hidden">Reading</span>
+            </button>
+            <button class="icon-button" id="button-journaling">
+                <i class="fas fa-pen-fancy"></i>
+                <span class="button-text hidden">Journaling</span>
+            </button>
+        </div>
+
+        <!-- Profile picture and Logout button -->
+        <div class="profile-logout-container">
+            <img src="{{ url_for('static', filename='images/' + username + '.png') }}" alt="ㅤᵕ̈" class="profile-picture">
+            <form action="{{ url_for('logout') }}" method="get" class="logout-form">
+                <input type="submit" value="Logout" class="logout-button">
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
