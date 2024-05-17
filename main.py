@@ -26,6 +26,8 @@ def write_users(users):
 
 @app.route('/')
 def index():
+    if 'username' in session:
+        return redirect(url_for('main'))
     return render_template('index.html')
 
 @app.route('/check_user', methods=['GET'])
@@ -54,5 +56,10 @@ def main():
     username = session['username']
     return render_template('main.html', username=username)
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8080)

@@ -85,7 +85,6 @@ body {
   font-family: 'Press Start 2P', cursive; /* Ensure the font is applied */
   font-size: 0.6em; /* Adjust size as needed */
 }
-/* Styles for the input field */
 input[type="text"],
 input[type="password"] {
   background: none;
@@ -96,11 +95,13 @@ input[type="password"] {
   font-family: 'Press Start 2P', cursive;
   font-size: 1em;
   width: 200px;
-  text-align: center;
+  text-align: center; /* Align text and cursor to the left */
   caret-color: white;
+  caret-width: 2px; /* Make the cursor thicker */
   padding: 0.5em;
   transition: color 0.5s, opacity 0.5s; /* Add transition for color and opacity */
 }
+
 
 input[type="text"]::placeholder,
 input[type="password"]::placeholder {
@@ -160,23 +161,14 @@ input[type="password"]:-moz-placeholder {
 }
 
 .fade-text {
-  animation: fadeInOut 2s ease-in-out forwards;
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  animation: fadeIn 1s ;
+  font-size: 0.5em;
+  color: #f2b15a;
 }
 
 .fade-button {
-  animation: fadeIn 2s ease-in-out forwards;
+  animation: fadeIn 3s;
+  
 }
 
 @keyframes fadeIn {
@@ -186,4 +178,68 @@ input[type="password"]:-moz-placeholder {
   100% {
     opacity: 1;
   }
+}/* Add these styles to your existing CSS */
+.logout-form {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3); /* Very faint grey color */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5em; /* Small size */
+    cursor: pointer;
+    transition: color 0.5s;
+}
+
+.logout-button:hover {
+    color: rgba(255, 255, 255, 0.6); /* Slightly brighter on hover */
+}
+
+
+/* Add these styles to your existing CSS */
+
+/* Neubrutalism button style */
+.neubrutalism-button {
+  background: #222222;
+  border: none;
+  position: absolute;
+  top: 30px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */  display: inline-block;
+  cursor: pointer;
+  animation: fadeIn 3s;
+}
+
+.neubrutalism-button span {
+  display: block;
+  background: #ff527a;
+  border: 2px solid #222222;
+  color: black;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.6em;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  transform: translate(-4px, -4px);
+  transition: transform 0.2s;
+}
+
+.neubrutalism-button:hover span {
+  transform: translate(-8px, -8px);
+}
+
+.neubrutalism-button:active span {
+  transform: translate(0, 0);
+}
+
+@keyframes flashRed {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(255, 0, 0, 0.2); }
+  100% { background-color: transparent; }
+}
+
+.flash-red {
+  animation: flashRed 1.5s ease-in-out;
 }

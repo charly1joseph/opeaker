@@ -3,6 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const usernameInput = document.getElementById('username');
     const feedback = document.getElementById('feedback');
 
+    // Prevent zooming on double-tap
+    document.addEventListener('touchstart', function(event) {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }, { passive: false });
+
+    // Force lowercase input for username
+    usernameInput.addEventListener('input', function() {
+        this.value = this.value.toLowerCase();
+    });
+
     usernameForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const username = usernameInput.value.trim();
@@ -23,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Transition effect for the username text
                     usernameInput.style.transition = 'color 1s, opacity 0.5s';
                     usernameInput.style.color = '#f2b15a';
-                    // usernameInput.style.opacity = '0';
 
                     // Replace the input field with static text
                     setTimeout(() => {
@@ -63,11 +74,17 @@ document.addEventListener('DOMContentLoaded', function() {
                             .then(data => {
                                 if (data.success) {
                                     window.location.href = `/main`;
-                                } else {
-                                    feedback.innerHTML = `<p>invalid pass key. please try again.</p>`;
+                                }  else {
+                                    passwordInput.classList.add('flash-red');
+                                    setTimeout(() => {
+                                        passwordInput.classList.remove('flash-red');
+                                    }, 2000);
                                 }
                             });
                         });
+
+                        // Automatically focus on the password input box
+                        passwordInput.focus();
 
                         // Fade in the password input box and login button
                         setTimeout(() => {
@@ -79,8 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 500); // Delay to sync with the color transition
                 } else {
                     feedback.innerHTML = `
-                        <p class="fade-text">new here? please set up your credentials</p>
-                        <button id="setup-button" class="fade-button">set up creds</button>
+
+                        <button id="setup-button" class="neubrutalism-button"><span>set up creds</span></button>
                     `;
                     const setupButton = document.getElementById('setup-button');
                     setupButton.addEventListener('click', function() {
