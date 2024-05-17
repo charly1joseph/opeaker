@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const setupForm = document.getElementById('setup-form');
     const usernameInput = document.getElementById('username');
     const feedback = document.getElementById('feedback');
+    const saveButton = document.querySelector('.login-button');
+    const profileImageInput = document.getElementById('profile_image');
+    const profileImageButton = document.querySelector('.circle-upload-button');
 
     // Get the username from the URL and set it in the input field
     const urlParams = new URLSearchParams(window.location.search);
@@ -52,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            const saveButton = document.querySelector('.login-button');
                             saveButton.classList.add('explode');
                             setTimeout(() => {
                                 window.location.href = '/main';
@@ -65,5 +67,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             });
+    });
+
+    // Handle image preview
+    profileImageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImageButton.style.backgroundImage = `url(${e.target.result})`;
+                profileImageButton.style.backgroundSize = 'cover';
+                profileImageButton.style.backgroundPosition = 'center';
+                profileImageButton.style.backgroundRepeat = 'no-repeat';
+            };
+            reader.readAsDataURL(file);
+        }
     });
 });
