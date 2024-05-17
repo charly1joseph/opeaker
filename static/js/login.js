@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
+                                    // loginButton.classList.add('explode');
+
                                     window.location.href = `/main`;
                                 }  else {
                                     passwordInput.classList.add('flash-red');
@@ -96,12 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 500); // Delay to sync with the color transition
                 } else {
                     feedback.innerHTML = `
-
                         <button id="setup-button" class="neubrutalism-button"><span>set up creds</span></button>
                     `;
                     const setupButton = document.getElementById('setup-button');
                     setupButton.addEventListener('click', function() {
-                        window.location.href = '/setup';
+                        window.location.href = `/setup?username=${username}`;
                     });
                 }
             });
