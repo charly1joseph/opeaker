@@ -10,10 +10,12 @@
 <body>
     <div class="container">
         <h1>opeaker</h1>
-        <form id="username-form">
-            <input type="text" id="username" name="username" placeholder="username..." required>
-        </form>
-        <div id="feedback"></div>
+        <div class="form-container">
+            <form id="username-form">
+                <input type="text" id="username" name="username" placeholder="username..." required>
+            </form>
+            <div id="feedback"></div>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>

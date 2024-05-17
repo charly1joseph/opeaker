@@ -57,6 +57,8 @@ def setup():
         password = request.form['password']
         profile_image = request.files.get('profile_image')
 
+        # Validate username
+
         users = read_users()
         if any(user['username'] == username for user in users):
             return jsonify({'success': False, 'message': 'Username already exists.'})
@@ -74,6 +76,7 @@ def setup():
     username = request.args.get('username', '')
     return render_template('setup.html', username=username)
 
+
 @app.route('/main')
 def main():
     if 'username' not in session:
@@ -88,4 +91,4 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8080)

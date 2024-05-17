@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         passwordContainer.innerHTML = `
                             <form id="password-form">
-                                <input type="password" id="password" name="password" placeholder="pass key..." required>
+                                <input type="password" id="password" name="password" placeholder="passkey..." required>
                                 <input type="submit" value="login" class="login-button">
                             </form>
                         `;

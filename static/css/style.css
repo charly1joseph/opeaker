@@ -152,6 +152,7 @@ input[type="password"]:-moz-placeholder {
   transition: color 0.5s; /* Ensure the color change transition */
 }
 
+
 /* Password container to maintain layout */
 .password-container {
   display: flex;
@@ -276,21 +277,20 @@ input[type="file"] {
 .form-group {
   margin-bottom: 1.5rem; /* Add space between form elements */
 }
-/* Add animation for the save button */
-input[type="submit"].login-button.explode {
-  animation: explode 0.5s forwards;
+/* Add this to your existing CSS */
+
+.explode {
+    animation: explode 0.5s ease-out forwards;
 }
 
 @keyframes explode {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(0);
-  }
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
 }
 
 /* Updated styles for the image upload button */
