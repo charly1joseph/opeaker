@@ -1,0 +1,10 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: 'Press Start 2P', cursive; /* Digital type font */
+}
+
+.container {
+  text-align: center;
+  padding-top: 20%;
+}
