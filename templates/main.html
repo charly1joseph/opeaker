@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>opeaker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Google font for digital type -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+    <div class="container">
+        <h1>opeaker</h1>
+        <p id="release-text">{{ username }}, welcome back.</p>
+
+        <!-- Buttons with icons -->
+        <div class="button-container">
+            <button class="icon-button" id="button-general">
+                <i class="fas fa-futbol"></i>
+                <span class="button-text hidden">General</span>
+            </button>
+            <button class="icon-button" id="button-about">
+                <i class="fas fa-tshirt"></i>
+                <span class="button-text hidden">About</span>
+            </button>
+            <button class="icon-button" id="button-billing">
+                <i class="fas fa-trophy"></i>
+                <span class="button-text hidden">Billing</span>
+            </button>
+            <button class="icon-button" id="button-info">
+                <i class="fas fa-info-circle"></i>
+                <span class="button-text hidden">Info</span>
+            </button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

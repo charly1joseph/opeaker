@@ -64,7 +64,7 @@ body {
 /* Typing animation */
 @keyframes typing {
   from { width: 0 }
-  to { width: 15em }
+  to { width: 20em }
 }
 
 @keyframes blink {
@@ -72,7 +72,7 @@ body {
 }
 
 @keyframes cursor-stop {
-  from { border-right: 0.15em solid orange; }
+  from { border-right: 0.15em solid #ff7f50; }
   to { border-right: 0.15em solid transparent; }
 }
 
@@ -80,8 +80,110 @@ body {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: 0.15em solid orange;
+  border-right: 0.15em solid #f2b15a;
   animation: typing 2s steps(15, end), blink 0.75s step-end infinite, cursor-stop 0s 4.25s forwards;
   font-family: 'Press Start 2P', cursive; /* Ensure the font is applied */
   font-size: 0.6em; /* Adjust size as needed */
+}
+/* Styles for the input field */
+input[type="text"],
+input[type="password"] {
+  background: none;
+  border: none;
+  /* border-bottom: 1px solid white; */
+  color: white;
+  outline: none;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1em;
+  width: 200px;
+  text-align: center;
+  caret-color: white;
+  padding: 0.5em;
+  transition: color 0.5s, opacity 0.5s; /* Add transition for color and opacity */
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* Faint, greyed-out text */
+  text-align: center;
+}
+
+input[type="text"]::-ms-input-placeholder,
+input[type="password"]::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5); /* For Internet Explorer */
+}
+
+input[type="text"]::-moz-placeholder,
+input[type="password"]::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5); /* For Firefox */
+}
+
+input[type="text"]:-ms-input-placeholder,
+input[type="password"]:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5); /* For Edge */
+}
+
+input[type="text"]:-moz-placeholder,
+input[type="password"]:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5); /* For Firefox */
+}
+
+/* Styles for the login button */
+.login-button {
+  background: none;
+  border: none;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  cursor: pointer;
+  transition: color 0.5s;
+}
+
+.login-button:hover {
+  color: #f2b15a;
+}
+
+/* Welcome message and username text */
+.username-text {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1em;
+  color: #f2b15a;
+  transition: color 0.5s; /* Ensure the color change transition */
+}
+
+/* Password container to maintain layout */
+.password-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.fade-text {
+  animation: fadeInOut 2s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fade-button {
+  animation: fadeIn 2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
