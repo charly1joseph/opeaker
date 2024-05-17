@@ -1,12 +1,9 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import csv
 import os
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
-app.config['UPLOAD_FOLDER'] = 'static/images'  # Set the upload folder
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB max file size
 
 # Path to the users CSV file
 USERS_CSV = 'users.csv'
@@ -49,60 +46,46 @@ def login_user():
     user = next((user for user in users if user['username'] == username), None)
     if user and user['password'] == password:
         session['username'] = username  # Store username in session
+        session['new_user'] = False  # Indicate that the user is not new
         return jsonify({'success': True})
     return jsonify({'success': False})
 
 @app.route('/setup', methods=['GET', 'POST'])
 def setup():
     if request.method == 'POST':
-        try:
-            username = request.form['username'].strip().lower()
-            password = request.form['password']
-            profile_image = request.files.get('profile_image')
+        username = request.form['username']
+        password = request.form['password']
+        profile_image = request.files.get('profile_image')
 
-            if not username:
-                return jsonify({'success': False, 'message': 'Username cannot be empty'})
+        users = read_users()
+        if any(user['username'] == username for user in users):
+            return jsonify({'success': False, 'message': 'Username already exists.'})
 
-            users = read_users()
-            if any(user['username'] == username for user in users):
-                return jsonify({'success': False, 'message': 'Username already exists'})
+        users.append({'username': username, 'password': password})
+        write_users(users)
 
-            # Save the profile image
-            if profile_image:
-                if profile_image.filename == '':
-                    return jsonify({'success': False, 'message': 'No selected file'})
-                if profile_image and allowed_file(profile_image.filename):
-                    filename = f"{username}.png"
-                    profile_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                else:
-                    return jsonify({'success': False, 'message': 'File type not allowed'})
+        if profile_image:
+            profile_image.save(os.path.join('static/images', f'{username}.png'))
 
-            # Add the new user to the CSV file
-            users.append({'username': username, 'password': password})
-            write_users(users)
+        session['username'] = username  # Store username in session
+        session['new_user'] = True  # Indicate that the user is new
+        return jsonify({'success': True})
 
-            session['username'] = username  # Store username in session
-            return jsonify({'success': True})
-        except Exception as e:
-            print(f"Error: {e}")
-            return jsonify({'success': False, 'message': str(e)})
-
-    return render_template('setup.html')
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
+    username = request.args.get('username', '')
+    return render_template('setup.html', username=username)
 
 @app.route('/main')
 def main():
     if 'username' not in session:
         return redirect(url_for('index'))  # Redirect to login if not authenticated
     username = session['username']
-    return render_template('main.html', username=username)
+    new_user = session.get('new_user', False)
+    return render_template('main.html', username=username, new_user=new_user)
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.clear()
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    app.run(debug=True)

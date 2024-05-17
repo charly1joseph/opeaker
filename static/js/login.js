@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         usernameInput.style.display = 'none';
                         usernameInput.parentNode.insertBefore(usernameText, usernameInput);
-                    }, 500);
+                    }, 200);
 
                     // Fade in the password input box and login button
                     setTimeout(() => {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             loginButton.style.transition = 'opacity 0.5s';
                             loginButton.style.opacity = 1;
                         }, 50);
-                    }, 500); // Delay to sync with the color transition
+                    }, 50); // Delay to sync with the color transition
                 } else {
                     feedback.innerHTML = `
                         <button id="setup-button" class="neubrutalism-button"><span>set up creds</span></button>

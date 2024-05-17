@@ -11,8 +11,7 @@
 <body>
     <div class="container">
         <h1>opeaker</h1>
-        <p id="release-text">{{ username }}, welcome back.</p>
-
+        <p id="release-text">{{ username }}, {{ 'welcome' if new_user else 'welcome back' }}.</p>
         <!-- Buttons with icons -->
         <div class="button-container">
             <button class="icon-button" id="button-philosophy">

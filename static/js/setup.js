@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const usernameInput = document.getElementById('username');
     const feedback = document.getElementById('feedback');
     const saveButton = document.querySelector('.login-button');
+    const profileImageInput = document.getElementById('profile_image');
+    const profileImageButton = document.querySelector('.circle-upload-button');
 
     // Get the username from the URL and set it in the input field
     const urlParams = new URLSearchParams(window.location.search);
@@ -49,5 +51,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             });
+    });
+
+    // Handle image preview
+    profileImageInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImageButton.style.backgroundImage = `url(${e.target.result})`;
+                profileImageButton.style.backgroundSize = 'cover';
+                profileImageButton.style.backgroundPosition = 'center';
+            };
+            reader.readAsDataURL(file);
+        }
     });
 });
