@@ -76,7 +76,41 @@ def setup():
     username = request.args.get('username', '')
     return render_template('setup.html', username=username)
 
+@app.route('/save_journal_entry', methods=['POST'])
+def save_journal_entry():
+    data = request.get_json()
+    text = data['text']
+    timestamp = data['timestamp']
 
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    username = session['username']
+    filename = f'static/journals/{username}_{timestamp.replace("/", "-").replace(":", "-")}.txt'
+
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, 'w') as f:
+        f.write(text)
+
+    return jsonify({'success': True})
+
+@app.route('/get_journal_entries', methods=['GET'])
+def get_journal_entries():
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    username = session['username']
+    journal_entries = []
+
+    folder_path = 'static/journals'
+    for filename in os.listdir(folder_path):
+        if filename.startswith(username):
+            timestamp = filename[len(username) + 1:-4].replace("-", "/")
+            with open(os.path.join(folder_path, filename), 'r') as f:
+                text = f.read()
+                journal_entries.append({'text': text, 'timestamp': timestamp})
+
+    return jsonify({'success': True, 'entries': journal_entries})
 @app.route('/main')
 def main():
     if 'username' not in session:
