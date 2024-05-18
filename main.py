@@ -97,6 +97,7 @@ def save_journal_entry():
     return jsonify({'success': True})
 
 
+
 @app.route('/get_journal_entries', methods=['GET'])
 def get_journal_entries():
     if 'username' not in session:

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (button.id === 'button-journaling') {
                 if (button.classList.contains('selected')) {
                     if (isEditing) {
-                        if (confirm('Are you sure you want to cancel this entry?')) {
+                        if (confirm('cancel this entry?')) {
                             closeJournalingSection();
                         }
                     } else {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     openJournalingSection();
                 }
             } else {
-                if (isEditing && !confirm('Are you sure you want to cancel this entry?')) {
+                if (isEditing && !confirm('cancel this entry?')) {
                     return;
                 }
                 closeJournalingSection();
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cancelJournalEntryButton.addEventListener('click', () => {
-        if (confirm('Are you sure you want to cancel this entry?')) {
+        if (confirm('cancel this entry?')) {
             journalText.value = '';
             addJournalEntryButton.style.display = 'flex';
             journalEntryForm.style.display = 'none';
@@ -81,10 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Animation to materialize the new entry
             entryPreview.classList.add('animate-entry');
 
-            journalText.value = '';
-            addJournalEntryButton.style.display = 'flex';
-            journalEntryForm.style.display = 'none';
-            isEditing = false;
+            if (confirm('submitting an entry is final.')) {
+                journalText.value = '';
+                addJournalEntryButton.style.display = 'flex';
+                journalEntryForm.style.display = 'none';
+                isEditing = false;
+            }
+            
         }
     });
 
