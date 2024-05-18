@@ -356,89 +356,105 @@ input[type="file"] {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1em;
 }
-/* Add styles for the journaling section */
-#journaling-section {
-    margin-top: 2rem;
-}
+/* Add these styles to your existing CSS */
 
-.hidden {
-    display: none;
-}
-
-.add-journal-entry-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: 2px solid white;
-    color: white;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5em;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.add-journal-entry-button .fas {
-    margin-right: 0.5rem;
-}
-
-#journal-entry-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    border: 2px solid white;
-    border-radius: 0.5rem;
-}
-
-#journal-text {
-    width: 100%;
-    height: 100px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5em;
-    color: white;
-    background: none;
-    border: 2px solid white;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    resize: none;
-}
-
-.submit-journal-entry, .cancel-journal-entry {
-    background: none;
-    border: 2px solid white;
-    color: white;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5em;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin: 0.5rem;
-}
-
+/* Journal Entry Styles */
 .journal-entry-preview {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid white;
-    padding: 0.5rem;
-    margin-top: 1rem;
-    cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 .journal-entry-full {
-    display: block;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid white;
-    padding: 0.5rem;
-    margin-top: 1rem;
+  display: block;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.8em;
+  text-align: left; /* Align text to the left */
+  white-space: pre-wrap; /* Preserve line breaks */
+  line-height: 1.5; /* Increase line height for readability */
+}
+
+.journal-entry-full p {
+  margin: 0; /* Remove default margin from <p> */
+}
+
+.journal-entry-full small {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.7em;
+  color: rgba(255, 255, 255, 0.7); /* Faint color for timestamp */
 }
 
 .minimize-entry {
-    background: none;
-    border: 2px solid white;
-    color: white;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.5em;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin: 0.5rem;
+  background: none;
+  border: 2px solid white;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  display: block;
+  margin-left: auto; /* Align to the right */
+}
+
+/* Existing styles */
+.hidden {
+  display: none;
+}
+
+.add-journal-entry-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 2px solid white;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-journal-entry-button .fas {
+  margin-right: 0.5rem;
+}
+
+#journal-entry-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border: 2px solid white;
+  border-radius: 0.5rem;
+}
+
+#journal-text {
+  width: 100%;
+  height: 100px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  color: white;
+  background: none;
+  border: 2px solid white;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  resize: none;
+}
+
+.submit-journal-entry, .cancel-journal-entry {
+  background: none;
+  border: 2px solid white;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0.5rem;
 }
