@@ -58,10 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cancelJournalEntryButton.addEventListener('click', () => {
-        journalText.value = '';
-        addJournalEntryButton.style.display = 'flex';
-        journalEntryForm.style.display = 'none';
-        isEditing = false;
+        if (confirm('Are you sure you want to cancel this entry?')) {
+            journalText.value = '';
+            addJournalEntryButton.style.display = 'flex';
+            journalEntryForm.style.display = 'none';
+            isEditing = false;
+        }
+        
     });
 
     submitJournalEntryButton.addEventListener('click', () => {
@@ -69,10 +72,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (entryText) {
             const timestamp = new Date().toLocaleString();
 
-            const entryPreview = createJournalEntryElement(entryText, timestamp);
-            journalEntries.appendChild(entryPreview);
-
             saveJournalEntry(entryText, timestamp);
+
+            // Add the entry to the top of the list
+            const entryPreview = createJournalEntryElement(entryText, timestamp);
+            journalEntries.insertBefore(entryPreview, journalEntries.firstChild);
+
+            // Animation to materialize the new entry
+            entryPreview.classList.add('animate-entry');
 
             journalText.value = '';
             addJournalEntryButton.style.display = 'flex';
@@ -121,17 +128,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function createJournalEntryElement(text, timestamp) {
         const entryPreview = document.createElement('div');
         entryPreview.classList.add('journal-entry-preview');
-        entryPreview.innerHTML = `<p>${text.substring(0, 50)}...</p><small>${timestamp}</small>`;
+        const newlineIndex = text.indexOf('\n');
+        const truncatedText = newlineIndex !== -1 ? text.substring(0, newlineIndex) : text.substring(0, 50);
+        entryPreview.innerHTML = `<p>${truncatedText}...</p><small class="timestamp">${timestamp}</small>`;
 
         entryPreview.addEventListener('click', () => {
-            entryPreview.innerHTML = `<p>${text}</p><button class="minimize-entry">Minimize</button><small>${timestamp}</small>`;
+            entryPreview.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p><button class="minimize-entry">-</button><small class="timestamp">${timestamp}</small>`;
             entryPreview.classList.add('journal-entry-full');
             entryPreview.classList.remove('journal-entry-preview');
 
             const minimizeButton = entryPreview.querySelector('.minimize-entry');
             minimizeButton.addEventListener('click', (event) => {
                 event.stopPropagation();
-                entryPreview.innerHTML = `<p>${text.substring(0, 50)}...</p><small>${timestamp}</small>`;
+                entryPreview.innerHTML = `<p>${truncatedText}...</p><small class="timestamp">${timestamp}</small>`;
                 entryPreview.classList.add('journal-entry-preview');
                 entryPreview.classList.remove('journal-entry-full');
             });
@@ -139,4 +148,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         return entryPreview;
     }
+
+    // Automatically expand the journal text area as the user types
+    journalText.addEventListener('input', function() {
+        this.style.height = '100px';
+        this.style.height = this.scrollHeight + 'px';
+    });
 });
