@@ -458,3 +458,9 @@ input[type="file"] {
   padding: 0.5rem;
   margin: 0.5rem;
 }
+
+
+/* Ensure proper spacing between buttons and the journaling section */
+#journaling-section {
+    margin-top: 2rem;
+}

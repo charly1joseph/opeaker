@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import csv
 import os
+from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
@@ -86,13 +88,14 @@ def save_journal_entry():
         return jsonify({'success': False, 'message': 'User not logged in'})
 
     username = session['username']
-    filename = f'static/journals/{username}_{timestamp.replace("/", "-").replace(":", "-")}.txt'
+    filename = f'static/journals/{username}_{timestamp.replace("/", "-").replace(":", "_")}.txt'
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, 'w') as f:
         f.write(text)
 
     return jsonify({'success': True})
+
 
 @app.route('/get_journal_entries', methods=['GET'])
 def get_journal_entries():
@@ -105,12 +108,21 @@ def get_journal_entries():
     folder_path = 'static/journals'
     for filename in os.listdir(folder_path):
         if filename.startswith(f"{username}_"):
-            timestamp = filename[len(username) + 1:-4].replace("-", "/")
+            timestamp_str = filename[len(username) + 1:-4].replace("-", "/").replace("_", ":").replace(",", "")
+            timestamp = datetime.strptime(timestamp_str, '%d/%m/%Y %H:%M:%S')
             with open(os.path.join(folder_path, filename), 'r') as f:
                 text = f.read()
                 journal_entries.append({'text': text, 'timestamp': timestamp})
 
+    # Sort the journal entries in descending order by timestamp
+    journal_entries.sort(key=lambda x: x['timestamp'], reverse=True)
+
+    # Convert timestamps back to strings for display
+    for entry in journal_entries:
+        entry['timestamp'] = entry['timestamp'].strftime('%d/%m/%Y %H:%M:%S')
+
     return jsonify({'success': True, 'entries': journal_entries})
+
 @app.route('/main')
 def main():
     if 'username' not in session:
