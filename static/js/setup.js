@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!usernamePattern.test(username)) {
             feedback.innerHTML = `<p class="fade-text">username must be 1-15 characters long. only letters and numbers allowed.</p>`;
+            saveButton.classList.remove('pulse'); // Display default style
         } else {
             feedback.innerHTML = ''; // Clear feedback if valid
         }
@@ -30,13 +31,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = usernameInput.value.trim();
         const password = document.getElementById('password').value.trim();
 
+        // Show the loader
+        saveButton.classList.add('pulse');
+
         // Check if the username is empty or invalid
         const usernamePattern = /^[a-zA-Z0-9]{1,15}$/;
         if (!username) {
             feedback.innerHTML = `<p class="fade-text">username cannot be blank.</p>`;
+            saveButton.classList.remove('pulse'); // Display default style
             return;
         } else if (!usernamePattern.test(username)) {
             feedback.innerHTML = `<p class="fade-text">username must be 1-15 characters long. only letters and numbers allowed.</p>`;
+            saveButton.classList.remove('pulse'); // Display default style
             return;
         }
 
@@ -46,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.exists && username !== initialUsername) {
                     feedback.innerHTML = `<p class="fade-text">username taken.</p>`;
+                    saveButton.classList.remove('pulse'); // Display default style
                 } else {
+                    
                     const formData = new FormData(setupForm);
                     fetch('/setup', {
                         method: 'POST',
@@ -63,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             feedback.innerHTML = `<p class="fade-text">${data.message}</p>`;
                             const passwordInput = document.getElementById('password');
                             passwordInput.value = '';
+                            saveButton.style.display = ''; // Display default style
                         }
                     });
                 }
