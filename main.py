@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 import requests
 
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Set a secret key for session management
 
@@ -74,7 +73,6 @@ WEATHER_CONDITION_ICONS = {
     "Moderate or heavy snow with thunder": "🌨️"
 }
 
-
 def get_moon_phase_icon():
     try:  # Replace with your WeatherAPI key
         url = f'https://api.weatherapi.com/v1/astronomy.json?key={weather_api_key}&q=London&dt={datetime.now().strftime("%Y-%m-%d")}'
@@ -84,7 +82,6 @@ def get_moon_phase_icon():
     except:
         moon_phase = "-"
     return MOON_PHASE_ICONS.get(moon_phase, "🌑")
-
 
 # Function to get the user's location based on their IP address
 def get_user_location():
@@ -105,7 +102,7 @@ def get_current_weather():
     except Exception as e:
         print(f"Error fetching weather data: {e}")
         return "-"
-        
+
 # Path to the users CSV file
 USERS_CSV = 'users.csv'
 
@@ -177,7 +174,6 @@ def setup():
     username = request.args.get('username', '')
     return render_template('setup.html', username=username)
 
-
 @app.route('/save_journal_entry', methods=['POST'])
 def save_journal_entry():
     data = request.get_json()
@@ -234,6 +230,142 @@ def get_journal_entries():
         entry['timestamp'] = f"{moon} {weather} {entry['timestamp']}"
 
     return jsonify({'success': True, 'entries': journal_entries})
+
+# Path to the books CSV file
+BOOKS_FOLDER = 'static/books'
+
+def read_books(username):
+    filename = f'{BOOKS_FOLDER}/{username}_books.csv'
+    if not os.path.exists(filename):
+        return []
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        return list(reader)
+
+def write_books(username, books):
+    filename = f'{BOOKS_FOLDER}/{username}_books.csv'
+    os.makedirs(BOOKS_FOLDER, exist_ok=True)
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['title', 'author', 'finished', 'review', 'rating']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(books)
+
+@app.route('/save_book', methods=['POST'])
+def save_book():
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    data = request.get_json()
+    title = data['title']
+    author = data['author']
+    username = session['username']
+    filename = f'static/books/{username}_books.csv'
+
+    new_book = {
+        'title': title,
+        'author': author,
+        'finished': False,
+        'review': '',
+        'rating': 0
+    }
+
+    if not os.path.exists('static/books'):
+        os.makedirs('static/books')
+
+    if not os.path.exists(filename):
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['title', 'author', 'finished', 'review', 'rating']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow(new_book)
+    else:
+        with open(filename, 'a', newline='') as csvfile:
+            fieldnames = ['title', 'author', 'finished', 'review', 'rating']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writerow(new_book)
+
+    return jsonify({'success': True})
+
+@app.route('/get_books', methods=['GET'])
+def get_books():
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    username = session['username']
+    filename = f'static/books/{username}_books.csv'
+
+    if not os.path.exists(filename):
+        return jsonify({'success': True, 'books': []})
+
+    books = []
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            books.append({
+                'title': row['title'],
+                'author': row['author'],
+                'finished': row['finished'] == 'True',
+                'review': row['review'],
+                'rating': int(row['rating'])
+            })
+
+    return jsonify({'success': True, 'books': books})
+
+@app.route('/mark_book_as_finished', methods=['POST'])
+def mark_book_as_finished():
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    data = request.get_json()
+    title = data['title']
+    username = session['username']
+    filename = f'static/books/{username}_books.csv'
+
+    books = []
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['title'] == title:
+                row['finished'] = 'True'
+            books.append(row)
+
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['title', 'author', 'finished', 'review', 'rating']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(books)
+
+    return jsonify({'success': True})
+
+@app.route('/save_book_review', methods=['POST'])
+def save_book_review():
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'User not logged in'})
+
+    data = request.get_json()
+    title = data['title']
+    review = data['review']
+    rating = int(data['rating'])
+    username = session['username']
+    filename = f'static/books/{username}_books.csv'
+
+    books = []
+    with open(filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['title'] == title:
+                row['review'] = review
+                row['rating'] = rating
+            books.append(row)
+
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['title', 'author', 'finished', 'review', 'rating']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(books)
+
+    return jsonify({'success': True})
 
 @app.route('/main')
 def main():

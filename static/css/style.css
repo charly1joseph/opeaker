@@ -54,11 +54,15 @@ body {
 .icon-button.selected .button-text {
   width: auto;
   opacity: 1;
+  font-family: 'Press Start 2P', cursive; /* Digital type font */
+font-size: 0.6em
 }
 
 .button-text.hidden {
   width: 0;
   opacity: 0;
+  font-family: 'Press Start 2P', cursive; /* Digital type font */
+
 }
 
 /* Typing animation */
@@ -523,6 +527,6 @@ input[type="file"] {
 
 /* Ensure proper spacing between buttons and the journaling section */
 #journaling-section {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
