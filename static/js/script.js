@@ -10,14 +10,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isEditing = false;
 
+    function showModal(message, confirmButtonText, cancelButtonText, onConfirm, onCancel) {
+        Swal.fire({
+            text: message,
+            showCancelButton: true,
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: cancelButtonText,
+            showClass: {
+                popup: 'swal2-show'
+            },
+            hideClass: {
+                popup: 'swal2-hide'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                onConfirm();
+            } else if (onCancel) {
+                onCancel();
+            }
+        });
+    }
+
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             if (button.id === 'button-journaling') {
                 if (button.classList.contains('selected')) {
                     if (isEditing) {
-                        if (confirm('cancel this entry?')) {
-                            closeJournalingSection();
-                        }
+                        showModal('stop writing?', 'yes', 'no, keep editing', closeJournalingSection);
                     } else {
                         closeJournalingSection();
                     }
@@ -25,10 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     openJournalingSection();
                 }
             } else {
-                if (isEditing && !confirm('cancel this entry?')) {
-                    return;
+                if (isEditing) {
+                    showModal('stop writing?', 'yes', 'no, keep editing', closeJournalingSection);
+                } else {
+                    closeJournalingSection();
                 }
-                closeJournalingSection();
             }
 
             if (button.classList.contains('selected')) {
@@ -58,36 +78,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cancelJournalEntryButton.addEventListener('click', () => {
-        if (confirm('cancel this entry?')) {
+        showModal('stop writing?', 'yes', 'no, keep editing', () => {
             journalText.value = '';
             addJournalEntryButton.style.display = 'flex';
             journalEntryForm.style.display = 'none';
             isEditing = false;
-        }
-        
+        });
     });
 
-    submitJournalEntryButton.addEventListener('click', () => {
+    submitJournalEntryButton.addEventListener('click', async () => {
         const entryText = journalText.value.trim();
         if (entryText) {
-            const timestamp = new Date().toLocaleString();
+            showModal('write?', 'into stone', 'not yet', () => {
+                const timestamp = new Date().toLocaleString();
 
-            saveJournalEntry(entryText, timestamp);
+                saveJournalEntry(entryText, timestamp);
 
-            // Add the entry to the top of the list
-            const entryPreview = createJournalEntryElement(entryText, timestamp);
-            journalEntries.insertBefore(entryPreview, journalEntries.firstChild);
+                // Add the entry to the top of the list
+                const entryPreview = createJournalEntryElement(entryText, timestamp);
+                journalEntries.insertBefore(entryPreview, journalEntries.firstChild);
 
-            // Animation to materialize the new entry
-            entryPreview.classList.add('animate-entry');
+                // Animation to materialize the new entry
+                entryPreview.classList.add('animate-entry');
 
-            if (confirm('submitting an entry is final.')) {
                 journalText.value = '';
                 addJournalEntryButton.style.display = 'flex';
                 journalEntryForm.style.display = 'none';
                 isEditing = false;
-            }
-            
+            });
         }
     });
 
@@ -133,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         entryPreview.classList.add('journal-entry-preview');
         const newlineIndex = text.indexOf('\n');
         const truncatedText = newlineIndex !== -1 ? text.substring(0, newlineIndex) : text.substring(0, 50);
-        entryPreview.innerHTML = `<p>${truncatedText}...</p><small class="timestamp">${timestamp}</small>`;
+        entryPreview.innerHTML = `<p>${truncatedText}</p><small class="timestamp">${timestamp}</small>`;
 
         entryPreview.addEventListener('click', () => {
             entryPreview.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p><button class="minimize-entry">-</button><small class="timestamp">${timestamp}</small>`;
@@ -143,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const minimizeButton = entryPreview.querySelector('.minimize-entry');
             minimizeButton.addEventListener('click', (event) => {
                 event.stopPropagation();
-                entryPreview.innerHTML = `<p>${truncatedText}...</p><small class="timestamp">${timestamp}</small>`;
+                entryPreview.innerHTML = `<p>${truncatedText}</p><small class="timestamp">${timestamp}</small>`;
                 entryPreview.classList.add('journal-entry-preview');
                 entryPreview.classList.remove('journal-entry-full');
             });

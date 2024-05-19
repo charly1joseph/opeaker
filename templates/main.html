@@ -8,6 +8,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Google font for digital type -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome for icons -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .swal2-popup {
+            font-size: 0.63rem; /* Adjust the font size */
+              font-family: 'Press Start 2P', cursive;
+            width: 300px !important; /* Make the modal smaller */
+            /* height: 200px !important; /* Make the modal smaller */
+
+            background: #000 !important; /* Black background */
+            color: #fff; /* White text */
+        }
+        .swal2-title {
+            font-size: 1.5rem; /* Title font size */
+        }
+        .swal2-content {
+            font-size: 1rem; /* Content font size */
+        }
+        .swal2-confirm {
+            background-color: white !important;
+            color: black !important;
+          font-family: 'Press Start 2P', cursive;
+        }
+        .swal2-cancel {
+            background-color: black !important; /* Cancel button color */
+            color: white;
+            border: 0.5px solid white !important;
+          font-family: 'Press Start 2P', cursive;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
@@ -36,7 +66,7 @@
 
         <!-- Journaling Section -->
         <div id="journaling-section" class="hidden">
-            <button class="add-journal-entry-button"><i class="fas fa-plus-circle"></i> Add a journal entry</button>
+            <button class="add-journal-entry-button"><i class="fas fa-plus-circle"></i>add journal entry</button>
             <div id="journal-entry-form" class="journal-entry-form" style="display: none;">
                 <textarea id="journal-text" placeholder="release your thoughts..."></textarea>
                 <div class="form-buttons">
